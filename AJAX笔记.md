@@ -183,7 +183,7 @@
 
     A：标签对象.classList.add()
 
-    B：标签对象.classList.contains()
+    B：标签对象.classList.contains('s')
 
     <details>
     <summary>答案</summary>

@@ -381,13 +381,22 @@ console.log(window.window === window); //true
 - 从`url`输入到页面显示会有哪些步骤？
 
 从输入URL到网页呈现的过程大致如下：
-1.DNS解析
-2.建立tcp连接
-3.客户端发送HTPP请求
-4.服务器处理请求
-5.服务器响应请求
-6.浏览器展示HTML
-7.浏览器发送请求获取其他在HTML中的资源。
+
+https://www.baidu.com/ 
+https : 传输协议 (TSL)
+www : 服务器
+baidu.com : 域名
+？id = 123 : 参数
+1.解析Url => 拿到真实的IP地址 (DNS域名系统)
+2.建立连接 (TCP三次握手)
+3.请求和传输数据 (渲染页面)
+
+              => display: none    
+html => dom树
+       (并行构建) => render tree => 计算布局信息 (回流) => UI引擎渲染 (重绘) => 用户所见页面 
+css => css结构体
+
+4.断开链接 (TCP四次挥手)
 
 用户单击鼠标后所发生的事件按顺序如下(以访问清华大学的网站为例)
 1.浏览器向DNS请求解析www.tsinghua.edu.cn的IP地址。
