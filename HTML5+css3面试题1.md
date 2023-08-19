@@ -882,19 +882,34 @@ CORS 解决跨域问题，就是在服务器端给响应添加头信息：
 - 什么是防抖？什么是节流？
 防抖 (Debouncing) 的含义是指在一定时间内，多次触发同一个事件，只执行最后一次操作。例如，当我们在搜索框中输入关键词时，输入框会不断触发 oninput 事件，如果每次输入都去请求服务器获取数据，会造成不必要的请求浪费。此时就可以使用防抖技术，将一定时间内的多次触发合并为一次操作，只请求一次服务器数据，减少了请求次数和服务器负载。
 节流 (Throttling) 的含义是指在一定时间内，多次触发同一个事件，只执行第一次操作。例如，当我们拖动网页上的滚动条时，会不断触发 onscroll 事件，如果每次触发都去计算滚动距离，会造成浏览器性能下降。此时就可以使用节流技术，将一定时间内的多次触发限制为一次操作，只计算一次滚动距离，提高了浏览器性能和用户体验。
-const box = document.querySelector('.box')
-    let i = 1  // 让这个变量++
-    // 鼠标移动函数
-    function mouseMove() {
-      box.innerHTML = ++i
-      // 如果里面存在大量操作 dom 的情况，可能会卡顿
+ // 防抖函数
+function debounce(fn, t) {
+  let timeId
+  return function () {
+    // 如果有定时器就清除
+    if (timeId) clearTimeout(timeId)
+    // 开启定时器
+    timeId = setTimeout(function () {
+      fn()
+    }, t)
+  }
+}
+// 节流函数 throttle 
+function throttle(fn, t) {
+  // 起始时间
+  let startTime = 0
+  return function () {
+    // 得到当前的时间
+    let now = Date.now()
+    // 判断如果大于等于 t 采取调用函数
+    if (now - startTime >= t) {
+      // 调用函数
+      fn()
+      // 起始的时间 = 现在的时间   写在调用函数的下面 
+      startTime = now
     }
-
-    // box.addEventListener('mousemove', mouseMove)
-    // lodash 节流写法
-    // box.addEventListener('mousemove', _.throttle(mouseMove, 500))
-    // lodash 防抖的写法
-    box.addEventListener('mousemove', _.debounce(mouseMove, 500))
+  }
+}
 
 - 什么是函数柯里化？
 柯里化（currying）又称部分求值。一个柯里化的函数首先会接受一些参数，接受了这些参数之后，该函数并不会立即求值，而是继续返回另外一个函数，刚才传入的参数在函数形成的闭包中被保存起来。待到函数被真正需要求值的时候，之前传入的所有参数都会被一次性用于求值。
