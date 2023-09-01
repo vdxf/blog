@@ -1,43 +1,35 @@
 ## ref
-作用：用于创建一个响应式引用，通常用于包装基本数据类型或非响应式对象，使其成为响应式。
-用法：用于声明一个引用，通过 .value 访问引用的值，如果该值发生变化，Vue会自动追踪和更新相关的界面。
+ref是一个函数，它可以将一个普通数据类型（如数字、字符串等）转换为一个响应式对象，从而让这个数据在Vue的响应式系统中被追踪。ref返回一个对象，这个对象有一个.value属性，用来获取和设置这个响应式对象的值
 
-<template>
-  <div>{{ count }}</div>
-  <button @click="increment">增加</button>
-</template>
-
-import { ref } from 'vue'
-
-const count = ref(0)
-// 在方法中修改 count
-const increment = () => {
-  count.value++
-}
+import { ref } from 'vue';
+​
+const count = ref(0);
+console.log(count.value); // 0
+​
+count.value = 1;
+console.log(count.value); // 1
 
 ## reactive
-作用：用于创建一个包含响应式数据的对象，可以将多个属性包装成一个响应式对象。
-用法：用于声明一个响应式对象，Vue会自动追踪对象属性的变化，并在界面中更新。
+reactive是一个函数，它可以将一个普通的Javascript对象转换为一个响应式对象。它会递归地将这个对象的所有属性都转换为响应式对象，从而让整个对象在Vue的响应式系统中被追踪。reactive返回一个Proxy对象，用来代理原始对象的访问和修改
 
-<template>
-  <div>{{ user.name }} - {{ user.age }} 岁</div>
-</template>
-
-import { reactive } from 'vue'
-
-const user = reactive({
-  name: 'John',
-  age: 30
-})
-// 在方法中修改 user
-const changeUser = () => {
-  user.name = 'Alice'
-  user.age = 25
-}
+import { reactive } from 'vue';
+​
+const state = reactive({
+  count: 0,
+  message: 'hello'
+});
+​
+console.log(state.count); // 0
+console.log(state.message); // 'hello'
+​
+state.count = 1;
+state.message = 'world';
+​
+console.log(state.count); // 1
+console.log(state.message); // 'world'
 
 ## 区别：
 主要区别在于用途和用法。
+ref主要用于创建一个单一的响应式数据，而reactive则适用于创建一个复杂的、包含多个属性的响应式数据对象
 ref 通常用于包装基本数据类型或非响应式对象，而 reactive 用于创建包含多个属性的响应式对象。
 对于 ref，你需要使用 .value 来访问和修改值，而 reactive 直接访问属性。
-ref 通常用于包装单一的变量，而 reactive 用于创建复杂的响应式数据结构。
-在选择使用 ref 还是 reactive 时，取决于需求和数据结构的复杂性。如果只需要包装一个单一的变量，使用 ref 即可。如果需要处理一个包含多个属性的对象或数据结构，可以使用 reactive。
